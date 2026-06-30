@@ -1,0 +1,16 @@
+{
+  "name": "invoices-playground",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Run the Invoices API (.NET) and web (Vite/React) together",
+  "scripts": {
+    "start": "concurrently --names \"api,web\" --prefix-colors \"cyan,magenta\" \"npm run start:api\" \"npm run start:web\"",
+    "start:api": "dotnet watch --project Invoices.Api",
+    "start:web": "npm --prefix invoices-web run dev",
+    "install:all": "npm install && npm --prefix invoices-web install",
+    "build": "dotnet build Invoices.Api && npm --prefix invoices-web run build"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}

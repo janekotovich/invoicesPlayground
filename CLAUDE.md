@@ -18,6 +18,8 @@ Keep this tree updated as the project grows.
 ```
 invoicesPlayground/
 ├── CLAUDE.md
+├── package.json                   # root: `npm start` runs API + web together (concurrently)
+├── .vscode/                       # F5 debug config (launch.json) + build task (tasks.json)
 ├── Invoices.Api/                  # ASP.NET Core minimal-API backend (.NET 10)
 │   ├── Invoices.Api.csproj        # project file / NuGet deps
 │   ├── Program.cs                 # entry point + endpoint definitions
@@ -41,8 +43,18 @@ invoicesPlayground/
 
 ## Commands
 
+### Run everything (root)
+
+- `npm install` once at the root (installs `concurrently`), plus deps in each project (`npm run install:all` does both).
+- `npm start` — runs the API and web dev server together via `concurrently` (labelled `api`/`web`). API uses `dotnet watch` (hot reload). API on `http://localhost:5129`, web on `http://localhost:5173`.
+- `npm run build` — builds the API then the web bundle.
+
+`npm start` is for spinning up the full stack (smoke tests, demos). For active debugging, run the two separately (below) so you can attach a debugger and restart each independently.
+
 ### Backend (`Invoices.Api/`)
 
+- Hot reload: `dotnet watch --project Invoices.Api`
+- Breakpoint debugging: VS Code → Run and Debug → **Debug API (.NET)** (F5). Config in [.vscode/launch.json](.vscode/launch.json).
 - Run (HTTP): `dotnet run` — serves on `http://localhost:5129`
 - Run (HTTPS): `dotnet run --launch-profile https` — adds `https://localhost:7157`
 - Build: `dotnet build`
