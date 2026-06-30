@@ -4,6 +4,9 @@ namespace Invoices.Api.Model;
 // the client can't set those (this is your over-posting protection).
 public class InvoiceInput : InvoiceBase
 {
-
+    /// <summary>
+    /// Client Id to map to
+    /// </summary>
+    public Guid ClientId { get; set; }
 
 }
