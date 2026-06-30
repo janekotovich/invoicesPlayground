@@ -1,0 +1,1 @@
+namespace  Invoices.Api.Model;
