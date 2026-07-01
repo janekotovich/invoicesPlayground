@@ -1,4 +1,6 @@
 using System.Text.Json.Serialization;
+using Invoices.Api.Data;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,8 +22,9 @@ builder.Services.AddCors(options =>
               .AllowAnyHeader()
               .AllowAnyMethod()));
 
-// TODO: register your invoice store once you create it, e.g.
-// builder.Services.AddSingleton<IInvoiceStore, InMemoryInvoiceStore>();
+
+builder.Services.AddDbContext<InvoicesDbContext>(o =>
+o.UseSqlite(builder.Configuration.GetConnectionString("DbConnection")));
 
 var app = builder.Build();
 
