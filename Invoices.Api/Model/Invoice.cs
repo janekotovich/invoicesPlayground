@@ -10,7 +10,7 @@ public class Invoice : InvoiceBase
 
     /// <summary>The user who issued the invoice.</summary>
     public required User User { get; set; }
-    public DateTimeOffset CreatedAt { get; set; }
+    public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.UtcNow;
 
     public decimal AmountPaid { get; set; } = 0m;
 
