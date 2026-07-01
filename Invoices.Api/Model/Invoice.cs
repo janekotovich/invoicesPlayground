@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Invoices.Api.Model;
 
 public class Invoice : InvoiceBase
@@ -10,5 +12,16 @@ public class Invoice : InvoiceBase
     public required User User { get; set; }
     public DateTimeOffset CreatedAt { get; set; }
 
-    public InvoiceStatus Status { get; set; } = InvoiceStatus.Unpaid;
+    public decimal AmountPaid { get; set; } = 0m;
+
+    public DateTimeOffset? PaidAt { get; set; }
+
+    [NotMapped]
+    public decimal Balance => Amount - AmountPaid;
+
+    [NotMapped]
+    public InvoiceStatus Status =>
+            AmountPaid <= 0 ? InvoiceStatus.Unpaid
+            : AmountPaid < Amount ? InvoiceStatus.PartiallyPaid
+            : InvoiceStatus.Paid;
 }
