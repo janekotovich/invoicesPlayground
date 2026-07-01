@@ -11,7 +11,7 @@ public class InvoiceResponse
     public decimal AmountPaid { get; set; }
     public decimal Balance { get; set; }
 
-    public InvoiceStatus InvoiceStatus { get; set; }
+    public InvoiceStatus Status { get; set; }
 
     public DateOnly DueDate { get; set; }
     public DateTimeOffset CreatedAt { get; set; }
