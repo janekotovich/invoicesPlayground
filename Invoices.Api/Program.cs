@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using Invoices.Api.Data;
+using Invoices.Api.Model;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,6 +28,36 @@ builder.Services.AddDbContext<InvoicesDbContext>(o =>
 o.UseSqlite(builder.Configuration.GetConnectionString("DbConnection")));
 
 var app = builder.Build();
+
+// Fixed seed IDs — stable across restarts so we can reference them later
+// (e.g. when creating invoices that link this user and client).
+var seedUserId = Guid.Parse("11111111-1111-1111-1111-111111111111");
+var seedClientId = Guid.Parse("22222222-2222-2222-2222-222222222222");
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<InvoicesDbContext>();
+
+    if (!db.Clients.Any())
+    {
+        db.Users.Add(new User
+        {
+            Id = seedUserId,
+            Name = "Jane (You)",
+            Email = "jane@firm.com"
+        });
+
+        db.Clients.Add(new Client
+        {
+            Id = seedClientId,
+            Name = "Acme Co",
+            Email = "ap@acme.com"
+        });
+
+        db.SaveChanges();
+    }
+
+}
 
 // ---------------------------------------------------------------------------
 // HTTP pipeline (middleware) — order matters
